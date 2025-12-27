@@ -1,27 +1,58 @@
 import { useState } from 'react'
-import { Layout, Wrench, Calendar as CalendarIcon, Users, Boxes } from 'lucide-react'
+import { Layout, Wrench, Calendar as CalendarIcon, Users, Boxes, LogOut, User } from 'lucide-react'
 import KanbanBoard from './components/KanbanBoard.tsx'
 import EquipmentManager from './components/EquipmentManager.tsx'
 import TeamManager from './components/TeamManager.tsx'
 import CalendarView from './components/CalendarView.tsx'
+import Login from './components/Login.tsx'
+import SignUp from './components/SignUp.tsx'
+import { useAuth } from './context/AuthContext.tsx'
 
 type View = 'kanban' | 'equipment' | 'teams' | 'calendar'
+type AuthView = 'login' | 'signup'
 
 function App() {
   const [currentView, setCurrentView] = useState<View>('kanban')
+  const [authView, setAuthView] = useState<AuthView>('login')
+  const { user, login, signup, logout, isAuthenticated } = useAuth()
+
+  const handleLogin = async (email: string, password: string) => {
+    try {
+      await login(email, password)
+    } catch (error) {
+      console.error('Login failed:', error)
+    }
+  }
+
+  const handleSignUp = async (name: string, email: string, password: string) => {
+    try {
+      await signup(name, email, password)
+    } catch (error) {
+      console.error('Sign up failed:', error)
+    }
+  }
+
+  // Show authentication screens if user is not logged in
+  if (!isAuthenticated) {
+    if (authView === 'login') {
+      return <Login onLogin={handleLogin} onSwitchToSignup={() => setAuthView('signup')} />
+    } else {
+      return <SignUp onSignUp={handleSignUp} onSwitchToLogin={() => setAuthView('login')} />
+    }
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 flex font-sans">
+    <div className="min-h-screen bg-slate-50 flex font-sans">
       {/* Sidebar */}
-      <aside className="w-72 bg-gradient-to-b from-indigo-600 via-blue-600 to-blue-700 text-white shadow-2xl flex flex-col">
-        <div className="p-6 border-b border-white/10">
-          <div className="flex items-center gap-4 mb-2">
-            <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl">
-              <Wrench className="w-8 h-8" />
+      <aside className="w-64 bg-slate-900 text-white shadow-xl flex flex-col border-r border-slate-800">
+        <div className="p-6 border-b border-slate-800">
+          <div className="flex items-center gap-3">
+            <div className="bg-slate-800 p-2.5 rounded-lg">
+              <Wrench className="w-7 h-7" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">GearGuard</h1>
-              <p className="text-xs text-blue-100 font-medium">Maintenance Pro</p>
+              <h1 className="text-xl font-bold">GearGuard</h1>
+              <p className="text-xs text-slate-400 font-medium">Maintenance Pro</p>
             </div>
           </div>
         </div>
@@ -29,62 +60,73 @@ function App() {
         <nav className="flex-1 p-4 space-y-2">
           <button
             onClick={() => setCurrentView('kanban')}
-            className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl font-semibold transition-all duration-200 ${
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-150 ${
               currentView === 'kanban' 
-                ? 'bg-white text-blue-700 shadow-xl scale-105' 
-                : 'hover:bg-white/10 hover:scale-102 active:scale-98'
+                ? 'bg-slate-800 text-white' 
+                : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
             }`}
           >
-            <Layout className="w-6 h-6" />
-            <span className="text-base">Kanban Board</span>
+            <Layout className="w-5 h-5" />
+            <span className="text-sm">Kanban Board</span>
           </button>
           
           <button
             onClick={() => setCurrentView('equipment')}
-            className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl font-semibold transition-all duration-200 ${
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-150 ${
               currentView === 'equipment' 
-                ? 'bg-white text-blue-700 shadow-xl scale-105' 
-                : 'hover:bg-white/10 hover:scale-102 active:scale-98'
+                ? 'bg-slate-800 text-white' 
+                : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
             }`}
           >
-            <Boxes className="w-6 h-6" />
-            <span className="text-base">Equipment</span>
+            <Boxes className="w-5 h-5" />
+            <span className="text-sm">Equipment</span>
           </button>
           
           <button
             onClick={() => setCurrentView('teams')}
-            className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl font-semibold transition-all duration-200 ${
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-150 ${
               currentView === 'teams' 
-                ? 'bg-white text-blue-700 shadow-xl scale-105' 
-                : 'hover:bg-white/10 hover:scale-102 active:scale-98'
+                ? 'bg-slate-800 text-white' 
+                : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
             }`}
           >
-            <Users className="w-6 h-6" />
-            <span className="text-base">Teams</span>
+            <Users className="w-5 h-5" />
+            <span className="text-sm">Teams</span>
           </button>
           
           <button
             onClick={() => setCurrentView('calendar')}
-            className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl font-semibold transition-all duration-200 ${
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-150 ${
               currentView === 'calendar' 
-                ? 'bg-white text-blue-700 shadow-xl scale-105' 
-                : 'hover:bg-white/10 hover:scale-102 active:scale-98'
+                ? 'bg-slate-800 text-white' 
+                : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
             }`}
           >
-            <CalendarIcon className="w-6 h-6" />
-            <span className="text-base">Calendar</span>
+            <CalendarIcon className="w-5 h-5" />
+            <span className="text-sm">Calendar</span>
           </button>
         </nav>
 
-        <div className="p-6 border-t border-white/10">
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-            <p className="text-sm font-semibold text-white/90">System Status</p>
-            <p className="text-xs text-blue-100 mt-1">All systems operational</p>
-            <div className="mt-3 flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-xs text-blue-100">Connected</span>
+        <div className="p-4 border-t border-slate-800">
+          <div className="bg-slate-800 rounded-lg p-3 mb-3">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 bg-slate-700 rounded-full flex items-center justify-center">
+                <User className="w-4 h-4 text-slate-300" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-white truncate">{user?.name}</p>
+                <p className="text-xs text-slate-400 truncate">{user?.email}</p>
+              </div>
             </div>
           </div>
+          
+          <button
+            onClick={logout}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 rounded-lg transition-all duration-150 text-sm font-medium"
+          >
+            <LogOut className="w-4 h-4" />
+            <span>Log Out</span>
+          </button>
         </div>
       </aside>
 
