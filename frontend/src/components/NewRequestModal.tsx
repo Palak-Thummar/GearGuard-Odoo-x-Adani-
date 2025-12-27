@@ -84,10 +84,10 @@ export default function NewRequestModal({ onClose, onSuccess }: Props) {
           description: formData.description || null,
           type: formData.type,
           category: formData.category || null,
-          scheduledDate: formData.scheduledDate || null,
+          scheduledDate: formData.scheduledDate ? `${formData.scheduledDate}T00:00:00` : null,
           technician: formData.technician || null,
-          equipmentId: Number(formData.equipmentId),
-          teamId: formData.teamId ? Number(formData.teamId) : null
+          equipment: { id: Number(formData.equipmentId) },
+          team: formData.teamId ? { id: Number(formData.teamId) } : null
         })
       })
 
@@ -103,18 +103,18 @@ export default function NewRequestModal({ onClose, onSuccess }: Props) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
-          <h3 className="text-2xl font-bold text-gray-900">New Maintenance Request</h3>
-          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            <X className="w-6 h-6" />
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto transform transition-all animate-in slide-in-from-bottom-4 duration-300">
+        <div className="sticky top-0 bg-gradient-to-r from-slate-900 to-slate-800 px-6 py-5 flex justify-between items-center rounded-t-2xl">
+          <h3 className="text-2xl font-bold text-white">New Maintenance Request</h3>
+          <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-xl transition-colors group">
+            <X className="w-6 h-6 text-white group-hover:rotate-90 transition-transform duration-300" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="p-6 space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-slate-700 mb-2">
               Request Name *
             </label>
             <input
@@ -122,20 +122,20 @@ export default function NewRequestModal({ onClose, onSuccess }: Props) {
               required
               value={formData.name}
               onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition"
               placeholder="e.g., Leaking Oil"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-slate-700 mb-2">
               Equipment *
             </label>
             <select
               required
               value={formData.equipmentId}
               onChange={e => handleEquipmentChange(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition"
             >
               <option value="">Select equipment...</option>
               {equipment.map(eq => (
@@ -148,13 +148,13 @@ export default function NewRequestModal({ onClose, onSuccess }: Props) {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Type
               </label>
               <select
                 value={formData.type}
                 onChange={e => setFormData(prev => ({ ...prev, type: e.target.value }))}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition"
               >
                 <option value="Corrective">Corrective</option>
                 <option value="Preventive">Preventive</option>
@@ -162,67 +162,67 @@ export default function NewRequestModal({ onClose, onSuccess }: Props) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Category
               </label>
               <input
                 type="text"
                 value={formData.category}
                 onChange={e => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition"
                 placeholder="Auto-filled or custom"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-slate-700 mb-2">
               Description
             </label>
             <textarea
               value={formData.description}
               onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
               rows={3}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Describe the issue..."
+              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition resize-none"
+              placeholder="Describe the issue in detail..."
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Scheduled Date
               </label>
               <input
                 type="date"
                 value={formData.scheduledDate}
                 onChange={e => setFormData(prev => ({ ...prev, scheduledDate: e.target.value }))}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Technician
               </label>
               <input
                 type="text"
                 value={formData.technician}
                 onChange={e => setFormData(prev => ({ ...prev, technician: e.target.value }))}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition"
                 placeholder="Auto-filled from equipment"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-slate-700 mb-2">
               Team
             </label>
             <select
               value={formData.teamId}
               onChange={e => setFormData(prev => ({ ...prev, teamId: e.target.value }))}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition"
             >
               <option value="">Select team...</option>
               {teams.map(team => (
@@ -233,17 +233,17 @@ export default function NewRequestModal({ onClose, onSuccess }: Props) {
             </select>
           </div>
 
-          <div className="flex gap-3 pt-4">
+          <div className="flex gap-4 pt-4">
             <button
               type="submit"
-              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors"
+              className="flex-1 bg-gradient-to-r from-slate-900 to-slate-800 hover:from-slate-800 hover:to-slate-700 text-white font-semibold py-3.5 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02]"
             >
               Create Request
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-3 rounded-lg transition-colors"
+              className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold py-3.5 rounded-xl transition-all duration-300 hover:scale-[1.02]"
             >
               Cancel
             </button>

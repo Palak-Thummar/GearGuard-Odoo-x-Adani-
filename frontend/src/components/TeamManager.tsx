@@ -30,40 +30,45 @@ export default function TeamManager() {
   }
 
   return (
-    <div className="p-8">
-      <div className="mb-8 flex justify-between items-center">
-        <div>
-          <h2 className="text-3xl font-bold text-gray-900">Maintenance Teams</h2>
-          <p className="text-gray-600 mt-1">Manage specialized teams and members</p>
+    <div className="p-8 min-h-screen bg-[#F5F7FA]">
+      <div className="mb-8">
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900 mb-2 tracking-tight">Maintenance Teams</h1>
+            <p className="text-sm text-slate-600">Manage specialized teams and members</p>
+          </div>
+          <button onClick={() => setShowForm(!showForm)} className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2 text-sm">
+            <Plus className="w-4 h-4" /> Add Team
+          </button>
         </div>
-        <button onClick={() => setShowForm(!showForm)} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium shadow-lg transition-colors flex items-center gap-2">
-          <Plus className="w-5 h-5" /> Add Team
-        </button>
       </div>
 
       {showForm && (
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <input required placeholder="Team Name *" value={form.name} onChange={e => setForm({...form, name: e.target.value})} className="w-full px-4 py-2 border rounded-lg" />
-            <input placeholder="Members (comma-separated)" value={form.members} onChange={e => setForm({...form, members: e.target.value})} className="w-full px-4 py-2 border rounded-lg" />
-            <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg">Create Team</button>
+        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 border border-slate-200 transform transition-all duration-300">
+          <h3 className="text-xl font-bold text-slate-900 mb-6">Create New Team</h3>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <input required placeholder="Team Name *" value={form.name} onChange={e => setForm({...form, name: e.target.value})} className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition" />
+            <input placeholder="Members (comma-separated)" value={form.members} onChange={e => setForm({...form, members: e.target.value})} className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-500 focus:border-transparent transition" />
+            <button type="submit" className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">Create Team</button>
           </form>
         </div>
       )}
 
       <div className="grid grid-cols-3 gap-6">
         {teams.map(team => (
-          <div key={team.id} className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow p-6">
+          <div key={team.id} className="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 p-4 border border-slate-200">
             <div className="flex items-center gap-3 mb-4">
-              <div className="bg-purple-100 p-3 rounded-lg">
-                <UsersIcon className="w-6 h-6 text-purple-600" />
+              <div className="bg-blue-600 p-2.5 rounded-lg">
+                <UsersIcon className="w-5 h-5 text-white" />
               </div>
-              <h3 className="font-bold text-lg text-gray-900">{team.name}</h3>
+              <h3 className="font-semibold text-base text-slate-900">{team.name}</h3>
             </div>
             {team.members && (
-              <div className="text-sm text-gray-600">
-                <p className="font-medium mb-2">Members:</p>
-                <p>{team.members}</p>
+              <div className="bg-slate-50 rounded-lg p-3 border border-slate-100">
+                <p className="font-medium text-sm text-slate-700 mb-2">
+                  Team Members
+                </p>
+                <p className="text-sm text-slate-600 leading-relaxed">{team.members}</p>
               </div>
             )}
           </div>

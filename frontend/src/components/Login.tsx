@@ -29,19 +29,19 @@ export default function Login({ onLogin, onSwitchToSignup }: LoginProps) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 flex items-center justify-center p-6">
       <div className="w-full max-w-md">
         {/* Logo and Title */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center bg-slate-900 p-4 rounded-xl mb-6 shadow-lg">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-cyan-600 via-blue-600 to-teal-600 rounded-2xl mb-6 shadow-2xl shadow-cyan-500/30">
             <Wrench className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">GearGuard</h1>
-          <p className="text-slate-600 font-medium">Professional Maintenance Management</p>
+          <h1 className="text-4xl font-bold text-white mb-2">GearGuard</h1>
+          <p className="text-slate-300 font-medium">Enterprise Maintenance Management</p>
         </div>
 
         {/* Login Card */}
-        <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-8">
+        <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 p-10">
           <h2 className="text-2xl font-bold text-slate-900 mb-6">Sign In</h2>
 
           {error && (
@@ -51,72 +51,59 @@ export default function Login({ onLogin, onSwitchToSignup }: LoginProps) {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-2">
                 Email Address
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+                  <Mail className="h-5 w-5 text-slate-400" />
                 </div>
                 <input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-14 pr-4 py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent transition text-gray-900 text-base"
-                  placeholder="you@example.com"
+                  className="block w-full pl-14 pr-4 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all outline-none font-medium bg-slate-50 focus:bg-white"
+                  placeholder="you@company.com"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-semibold text-slate-700 mb-2">
                 Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
+                  <Lock className="h-5 w-5 text-slate-400" />
                 </div>
                 <input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-14 pr-4 py-3.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent transition text-gray-900 text-base"
+                  className="block w-full pl-14 pr-4 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition-all outline-none font-medium bg-slate-50 focus:bg-white"
                   placeholder="••••••••"
                 />
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <span className="ml-2 text-sm text-gray-600">Remember me</span>
-              </label>
-              <a href="#" className="text-sm text-slate-600 hover:text-slate-900 font-medium">
-                Forgot password?
-              </a>
-            </div>
-
             <button
               type="submit"
-              className="w-full bg-slate-900 text-white font-semibold py-3 px-4 rounded-lg hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-all duration-200"
+              className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white font-semibold py-4 px-4 rounded-xl shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/30 transition-all duration-200"
             >
               Sign In
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
+          <div className="mt-8 text-center">
+            <p className="text-sm text-slate-600">
               Don't have an account?{' '}
               <button
                 onClick={onSwitchToSignup}
-                className="text-slate-900 hover:text-slate-700 font-semibold"
+                className="text-cyan-600 hover:text-cyan-700 font-semibold"
               >
                 Sign up
               </button>
@@ -125,7 +112,7 @@ export default function Login({ onLogin, onSwitchToSignup }: LoginProps) {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-8 text-slate-500 text-sm">
+        <div className="text-center mt-8 text-slate-400 text-sm">
           <p>© 2025 GearGuard. All rights reserved.</p>
         </div>
       </div>

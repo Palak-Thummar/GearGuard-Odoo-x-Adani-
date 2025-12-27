@@ -6,7 +6,8 @@ import {
   closestCorners,
   PointerSensor,
   useSensor,
-  useSensors
+  useSensors,
+  useDroppable
 } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { AlertCircle, Clock } from 'lucide-react'
@@ -14,6 +15,15 @@ import RequestCard from './RequestCard.tsx'
 import NewRequestModal from './NewRequestModal.tsx'
 
 const API_BASE = 'http://localhost:8081/api'
+
+function DroppableColumn({ id, children }: { id: string; children: React.ReactNode }) {
+  const { setNodeRef } = useDroppable({ id })
+  return (
+    <div ref={setNodeRef} className="space-y-4 min-h-[500px]">
+      {children}
+    </div>
+  )
+}
 
 interface Stage {
   id: number
@@ -99,10 +109,7 @@ export default function KanbanBoard() {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...request,
-          equipmentId: request.equipment.id,
-          stageId: newStageId,
-          teamId: request.team?.id
+          stage: { id: newStageId }
         })
       })
 
@@ -125,18 +132,19 @@ export default function KanbanBoard() {
   const activeRequest = activeId ? requests.find(r => r.id === activeId) : null
 
   return (
-    <div className="p-10 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/20">
-      <div className="mb-10">
+    <div className="p-8 bg-[#F5F7FA] min-h-screen">
+      {/* Page Header */}
+      <div className="mb-8">
         <div className="flex justify-between items-start">
           <div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-3 tracking-tight">Maintenance Requests</h2>
-            <p className="text-lg text-gray-600 font-medium">Drag & drop cards to update status</p>
+            <h1 className="text-2xl font-bold text-slate-900 mb-2 tracking-tight">Maintenance Requests</h1>
+            <p className="text-sm text-slate-600">Drag and drop cards to update their status</p>
           </div>
           <button
             onClick={() => setShowModal(true)}
-            className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-4 rounded-2xl font-bold shadow-xl hover:shadow-2xl transition-all duration-200 flex items-center gap-3 text-lg hover:scale-105 active:scale-95"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium shadow-sm hover:shadow-md transition-all duration-200 flex items-center gap-2 text-sm"
           >
-            <span className="text-2xl leading-none">+</span>
+            <span className="text-base font-semibold">+</span>
             <span>New Request</span>
           </button>
         </div>
@@ -149,11 +157,19 @@ export default function KanbanBoard() {
         onDragEnd={handleDragEnd}
       >
         <div className="grid grid-cols-4 gap-6">
-          {stages.map(stage => (
-            <div key={stage.id} className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 shadow-soft border border-gray-100">
-              <div className="flex items-center justify-between mb-5">
-                <h3 className="font-bold text-xl text-gray-900">{stage.name}</h3>
-                <span className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-md">
+          {stages.map((stage, idx) => {
+            const stageColors = [
+              { bg: 'bg-slate-50', border: 'border-slate-200', badge: 'bg-slate-600', text: 'text-slate-700' },
+              { bg: 'bg-amber-50', border: 'border-amber-200', badge: 'bg-amber-600', text: 'text-amber-900' },
+              { bg: 'bg-green-50', border: 'border-green-200', badge: 'bg-green-600', text: 'text-green-900' },
+              { bg: 'bg-slate-50', border: 'border-slate-300', badge: 'bg-slate-500', text: 'text-slate-700' }
+            ][idx] || stages[0];
+            
+            return (
+            <div key={stage.id} className={`${stageColors.bg} rounded-lg p-4 border ${stageColors.border}`}>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className={`font-semibold text-sm ${stageColors.text}`}>{stage.name}</h3>
+                <span className={`${stageColors.badge} text-white px-2.5 py-0.5 rounded-full text-xs font-medium`}>
                   {requests.filter(r => r.stage?.id === stage.id).length}
                 </span>
               </div>
@@ -163,16 +179,17 @@ export default function KanbanBoard() {
                 items={requests.filter(r => r.stage?.id === stage.id).map(r => r.id)}
                 strategy={verticalListSortingStrategy}
               >
-                <div className="space-y-4 min-h-[500px]" id={stage.id.toString()}>
+                <DroppableColumn id={stage.id.toString()}>
                   {requests
                     .filter(r => r.stage?.id === stage.id)
                     .map(request => (
                       <RequestCard key={request.id} request={request} />
                     ))}
-                </div>
+                </DroppableColumn>
               </SortableContext>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         <DragOverlay>

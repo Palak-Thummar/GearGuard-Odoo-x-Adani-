@@ -1,7 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Clock, AlertTriangle, User, Package } from 'lucide-react'
-import { clsx } from 'clsx'
+import { Clock, AlertTriangle, User, Package, Wrench, Users, Calendar } from 'lucide-react'
+import clsx from 'clsx'
 
 interface Equipment {
   id: number
@@ -51,70 +51,57 @@ export default function RequestCard({ request, isDragging }: Props) {
       {...attributes}
       {...listeners}
       className={clsx(
-        'bg-white rounded-xl p-5 shadow-medium hover:shadow-large transition-all duration-200 cursor-grab active:cursor-grabbing border-2',
-        request.overdue ? 'border-red-400 bg-red-50/50' : 'border-transparent hover:border-blue-200'
+        'bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-200 cursor-grab active:cursor-grabbing border mb-3',
+        request.overdue ? 'border-red-400 bg-red-50/50' : 'border-slate-200 hover:border-blue-300'
       )}
     >
-      <div className="flex items-start justify-between mb-3">
-        <h4 className="font-bold text-gray-900 flex-1 text-base leading-snug">{request.name}</h4>
-        {request.overdue && (
-          <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 ml-2" />
-        )}
-      </div>
-
-      {request.description && (
-        <p className="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed">{request.description}</p>
-      )}
-
-      <div className="space-y-2.5 text-sm mb-4">
-        <div className="flex items-center gap-2.5 text-gray-700">
-          <div className="bg-blue-100 p-1.5 rounded-lg">
-            <Package className="w-4 h-4 text-blue-600" />
-          </div>
-          <span className="truncate font-medium">{request.equipment.name}</span>
-        </div>
-
-        {request.technician && (
-          <div className="flex items-center gap-2.5 text-gray-700">
-            <div className="bg-purple-100 p-1.5 rounded-lg">
-              <User className="w-4 h-4 text-purple-600" />
-            </div>
-            <span className="font-medium">{request.technician}</span>
+      {/* Card Title */}
+      <h4 className="font-semibold text-sm text-slate-900 mb-3 leading-tight">{request.name}</h4>
+      
+      {/* Metadata Section */}
+      <div className="space-y-2 text-xs">
+        {/* Equipment */}
+        {request.equipment && (
+          <div className="flex items-center gap-2 text-slate-600">
+            <Wrench className="w-3.5 h-3.5 text-slate-400" />
+            <span className="truncate">{request.equipment.name}</span>
           </div>
         )}
-
+        
+        {/* Team */}
+        {request.team && (
+          <div className="flex items-center gap-2 text-slate-600">
+            <Users className="w-3.5 h-3.5 text-slate-400" />
+            <span className="truncate">{request.team.name}</span>
+          </div>
+        )}
+        
+        {/* Date */}
         {request.scheduledDate && (
-          <div className="flex items-center gap-2.5 text-gray-700">
-            <div className="bg-green-100 p-1.5 rounded-lg">
-              <Clock className="w-4 h-4 text-green-600" />
-            </div>
-            <span className="font-medium">{new Date(request.scheduledDate).toLocaleDateString()}</span>
+          <div className="flex items-center gap-2 text-slate-600">
+            <Calendar className="w-3.5 h-3.5 text-slate-400" />
+            <span>{new Date(request.scheduledDate).toLocaleDateString()}</span>
           </div>
         )}
       </div>
-
-      <div className="flex gap-2 flex-wrap">
+      
+      {/* Tags Section */}
+      <div className="flex items-center gap-2 mt-3 flex-wrap">
+        {/* Type Badge */}
         <span className={clsx(
-          'px-3 py-1.5 rounded-lg text-xs font-bold',
-          request.type === 'Preventive' 
-            ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white' 
-            : 'bg-gradient-to-r from-orange-500 to-red-500 text-white'
+          'px-2 py-0.5 rounded-full text-[10px] font-medium',
+          request.type === 'preventive' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'
         )}>
-          {request.type}
+          {request.type === 'preventive' ? 'Preventive' : 'Corrective'}
         </span>
         
-        {request.category && (
-          <span className="px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
-            {request.category}
+        {/* Overdue Badge */}
+        {request.overdue && (
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-red-100 text-red-700">
+            Overdue
           </span>
         )}
       </div>
-
-      {request.duration && (
-        <div className="mt-3 text-xs text-gray-500 font-semibold bg-gray-100 px-3 py-1.5 rounded-lg inline-block">
-          Duration: {request.duration}h
-        </div>
-      )}
     </div>
   )
 }

@@ -39,8 +39,19 @@ public class RequestController {
 
     @PostMapping
     public ResponseEntity<MaintenanceRequest> create(@RequestBody MaintenanceRequest payload) {
-        Equipment eq = equipmentRepo.findById(payload.getEquipment().getId()).orElse(null);
+        // Get equipment ID from payload
+        Long equipmentId = null;
+        if (payload.getEquipment() != null && payload.getEquipment().getId() != null) {
+            equipmentId = payload.getEquipment().getId();
+        }
+        
+        if (equipmentId == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        
+        Equipment eq = equipmentRepo.findById(equipmentId).orElse(null);
         if (eq == null) return ResponseEntity.notFound().build();
+        
         // Auto-fill
         if (payload.getCategory() == null) payload.setCategory(eq.getCategory());
         if (payload.getTeam() == null) payload.setTeam(eq.getMaintenanceTeam());

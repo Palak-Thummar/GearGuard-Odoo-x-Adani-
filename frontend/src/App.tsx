@@ -42,90 +42,90 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex font-sans">
+    <div className="min-h-screen bg-[#F5F7FA] flex font-sans">
       {/* Sidebar */}
-      <aside className="w-64 bg-slate-900 text-white shadow-xl flex flex-col border-r border-slate-800">
-        <div className="p-6 border-b border-slate-800">
+      <aside className="w-64 bg-gradient-to-b from-[#1e293b] via-[#0f172a] to-[#020617] text-white shadow-2xl flex flex-col">
+        <div className="px-6 py-8 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <div className="bg-slate-800 p-2.5 rounded-lg">
-              <Wrench className="w-7 h-7" />
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-lg">
+              <Wrench className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold">GearGuard</h1>
+              <h1 className="text-base font-semibold tracking-tight">GearGuard</h1>
               <p className="text-xs text-slate-400 font-medium">Maintenance Pro</p>
             </div>
           </div>
         </div>
         
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className="flex-1 px-3 py-6 space-y-1">
           <button
             onClick={() => setCurrentView('kanban')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-150 ${
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-200 text-sm group ${
               currentView === 'kanban' 
-                ? 'bg-slate-800 text-white' 
-                : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' 
+                : 'text-slate-300 hover:bg-white/5 hover:text-white'
             }`}
           >
-            <Layout className="w-5 h-5" />
-            <span className="text-sm">Kanban Board</span>
+            <Layout className="w-4 h-4" />
+            <span>Kanban Board</span>
           </button>
           
           <button
             onClick={() => setCurrentView('equipment')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-150 ${
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-200 text-sm group ${
               currentView === 'equipment' 
-                ? 'bg-slate-800 text-white' 
-                : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' 
+                : 'text-slate-300 hover:bg-white/5 hover:text-white'
             }`}
           >
-            <Boxes className="w-5 h-5" />
-            <span className="text-sm">Equipment</span>
+            <Boxes className="w-4 h-4" />
+            <span>Equipment</span>
           </button>
           
           <button
             onClick={() => setCurrentView('teams')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-150 ${
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-200 text-sm group ${
               currentView === 'teams' 
-                ? 'bg-slate-800 text-white' 
-                : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' 
+                : 'text-slate-300 hover:bg-white/5 hover:text-white'
             }`}
           >
-            <Users className="w-5 h-5" />
-            <span className="text-sm">Teams</span>
+            <Users className="w-4 h-4" />
+            <span>Teams</span>
           </button>
           
           <button
             onClick={() => setCurrentView('calendar')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-150 ${
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-200 text-sm group ${
               currentView === 'calendar' 
-                ? 'bg-slate-800 text-white' 
-                : 'text-slate-300 hover:bg-slate-800/50 hover:text-white'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' 
+                : 'text-slate-300 hover:bg-white/5 hover:text-white'
             }`}
           >
-            <CalendarIcon className="w-5 h-5" />
-            <span className="text-sm">Calendar</span>
+            <CalendarIcon className="w-4 h-4" />
+            <span>Calendar</span>
           </button>
         </nav>
 
-        <div className="p-4 border-t border-slate-800">
-          <div className="bg-slate-800 rounded-lg p-3 mb-3">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 bg-slate-700 rounded-full flex items-center justify-center">
-                <User className="w-4 h-4 text-slate-300" />
+        <div className="p-3 border-t border-slate-700/50">
+          <div className="bg-slate-800/50 rounded-lg p-2.5 mb-2 backdrop-blur-sm border border-slate-700/50">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center shadow-lg">
+                <User className="w-4 h-4 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-white truncate">{user?.name}</p>
-                <p className="text-xs text-slate-400 truncate">{user?.email}</p>
+                <p className="text-xs font-medium text-white truncate">{user?.name}</p>
+                <p className="text-[10px] text-slate-400 truncate">{user?.email}</p>
               </div>
             </div>
           </div>
           
           <button
             onClick={logout}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 rounded-lg transition-all duration-150 text-sm font-medium"
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-slate-800/50 hover:bg-red-600 text-slate-300 hover:text-white rounded-lg transition-all duration-200 font-medium border border-slate-700/50 hover:border-red-600 text-xs"
           >
             <LogOut className="w-4 h-4" />
-            <span>Log Out</span>
+            <span>Logout</span>
           </button>
         </div>
       </aside>
