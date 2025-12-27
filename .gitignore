@@ -13,3 +13,6 @@ frontend/.env*
 
 # Logs
 *.log
+
+# H2 Database
+/backend/data/

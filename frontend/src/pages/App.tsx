@@ -13,7 +13,7 @@ type Equipment = { id: number, name: string, serialNo?: string, category?: strin
 
 type Request = { id: number, name: string, type: string, equipment: { id: number }, stage?: { id: number }, overdue: boolean }
 
-const API = 'http://localhost:8080/api'
+const API = 'http://localhost:8081/api'
 
 export default function App() {
   const [equipment, setEquipment] = useState<Equipment[]>([])
