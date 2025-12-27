@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root menu -->
+    <menuitem id="menu_gear_guard_root" name="GearGuard" sequence="10"/>
+
+    <!-- Equipment -->
+    <menuitem id="menu_gg_equipment" name="Equipment" parent="menu_gear_guard_root" sequence="10"/>
+    <record id="action_gg_equipment" model="ir.actions.act_window">
+        <field name="name">Equipment</field>
+        <field name="res_model">gg.equipment</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{"search_default_group_by_department": 0}</field>
+    </record>
+    <menuitem id="menu_gg_equipment_items" name="Equipment" parent="menu_gg_equipment" action="action_gg_equipment" sequence="10"/>
+
+    <!-- Teams -->
+    <menuitem id="menu_gg_team" name="Maintenance Teams" parent="menu_gear_guard_root" sequence="20"/>
+    <record id="action_gg_maintenance_team" model="ir.actions.act_window">
+        <field name="name">Maintenance Teams</field>
+        <field name="res_model">gg.maintenance.team</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="menu_gg_maintenance_team_items" name="Teams" parent="menu_gg_team" action="action_gg_maintenance_team" sequence="10"/>
+
+    <!-- Requests -->
+    <menuitem id="menu_gg_requests" name="Requests" parent="menu_gear_guard_root" sequence="30"/>
+    <record id="action_gg_maintenance_request" model="ir.actions.act_window">
+        <field name="name">Maintenance Requests</field>
+        <field name="res_model">gg.maintenance.request</field>
+        <field name="view_mode">kanban,tree,form,calendar,pivot,graph</field>
+        <field name="context">{"search_default_group_by_stage": 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create your first maintenance request</p>
+        </field>
+    </record>
+    <menuitem id="menu_gg_request_items" name="Requests" parent="menu_gg_requests" action="action_gg_maintenance_request" sequence="10"/>
+
+    <!-- Reports (placeholder) -->
+    <menuitem id="menu_gg_reports" name="Reports" parent="menu_gear_guard_root" sequence="40"/>
+
+</odoo>

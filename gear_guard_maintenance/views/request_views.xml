@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Kanban View with drag & drop across stages -->
+    <record id="view_gg_request_kanban" model="ir.ui.view">
+        <field name="name">gg.maintenance.request.kanban</field>
+        <field name="model">gg.maintenance.request</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column" default_group_by="stage_id">
+                <field name="stage_id"/>
+                <field name="user_id"/>
+                <field name="team_id"/>
+                <field name="is_overdue"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click #{record.is_overdue.value and 'o_kanban_red' or ''}">
+                            <strong t-esc="record.name.value"/>
+                            <div class="o_kanban_tags">
+                                <span t-if="record.is_overdue.value" class="text-danger">Overdue</span>
+                                <span t-if="record.type.raw_value == 'preventive'" class="badge badge-primary ml-1">Preventive</span>
+                            </div>
+                            <div class="o_kanban_details">
+                                <span t-esc="record.equipment_id.display_name"/>
+                            </div>
+                            <div class="o_kanban_avatar">
+                                <img t-if="record.user_id.raw_value" t-att-src="kanban_image('res.users','image_128', record.user_id.raw_value)" t-att-title="record.user_id.value" class="o_kanban_avatar"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_gg_request_tree" model="ir.ui.view">
+        <field name="name">gg.maintenance.request.tree</field>
+        <field name="model">gg.maintenance.request</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="type"/>
+                <field name="equipment_id"/>
+                <field name="category_id"/>
+                <field name="team_id"/>
+                <field name="user_id"/>
+                <field name="scheduled_date"/>
+                <field name="duration"/>
+                <field name="stage_id"/>
+                <field name="is_overdue"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View with workflow buttons -->
+    <record id="view_gg_request_form" model="ir.ui.view">
+        <field name="name">gg.maintenance.request.form</field>
+        <field name="model">gg.maintenance.request</field>
+        <field name="arch" type="xml">
+            <form string="Maintenance Request">
+                <header>
+                    <button name="action_assign_to_me" type="object" string="Assign to me" class="btn-secondary" attrs="{'invisible': [('user_id','=',uid)]}"/>
+                    <button name="action_start" type="object" string="Start" class="btn-primary" attrs="{'invisible': [('stage_id.name','in',['In Progress','Repaired','Scrap'])]}"/>
+                    <button name="action_mark_repaired" type="object" string="Mark Repaired" class="btn-success" attrs="{'invisible': [('stage_id.name','in',['Repaired','Scrap'])]}"/>
+                    <button name="action_move_to_scrap" type="object" string="Scrap" class="btn-danger" attrs="{'invisible': [('stage_id.name','in',['Scrap'])]}"/>
+                    <field name="stage_id" widget="statusbar" options="{'clickable': True}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="type"/>
+                            <field name="equipment_id" options="{'no_create': False}"/>
+                            <field name="category_id"/>
+                        </group>
+                        <group>
+                            <field name="team_id"/>
+                            <field name="user_id"/>
+                            <field name="scheduled_date"/>
+                            <field name="duration"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="Describe the issue..."/>
+                        </page>
+                    </notebook>
+                    <chatter>
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </chatter>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Calendar View for Preventive requests -->
+    <record id="view_gg_request_calendar" model="ir.ui.view">
+        <field name="name">gg.maintenance.request.calendar</field>
+        <field name="model">gg.maintenance.request</field>
+        <field name="arch" type="xml">
+            <calendar string="Preventive Maintenance" date_start="scheduled_date" color="team_id" quick_create="1" mode="month" create="true" edit="true">
+                <field name="name"/>
+                <filter string="Preventive" name="preventive_only" domain="[('type','=','preventive')]"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Pivot and Graph (optional/advanced) -->
+    <record id="view_gg_request_pivot" model="ir.ui.view">
+        <field name="name">gg.maintenance.request.pivot</field>
+        <field name="model">gg.maintenance.request</field>
+        <field name="arch" type="xml">
+            <pivot string="Requests">
+                <field name="id" type="measure"/>
+                <field name="team_id" type="row"/>
+                <field name="category_id" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_gg_request_graph" model="ir.ui.view">
+        <field name="name">gg.maintenance.request.graph</field>
+        <field name="model">gg.maintenance.request</field>
+        <field name="arch" type="xml">
+            <graph string="Requests" type="bar">
+                <field name="id" type="measure"/>
+                <field name="team_id"/>
+                <field name="category_id"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_gg_request_search" model="ir.ui.view">
+        <field name="name">gg.maintenance.request.search</field>
+        <field name="model">gg.maintenance.request</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="my_requests" string="My Requests" domain="[('user_id','=',uid)]"/>
+                <filter name="overdue" string="Overdue" domain="[('is_overdue','=',True)]"/>
+                <filter name="preventive" string="Preventive" domain="[('type','=','preventive')]"/>
+                <separator/>
+                <filter name="group_by_stage" string="Stage" context="{'group_by': 'stage_id'}"/>
+                <filter name="group_by_team" string="Team" context="{'group_by': 'team_id'}"/>
+                <filter name="group_by_category" string="Category" context="{'group_by': 'category_id'}"/>
+                <filter name="group_by_equipment" string="Equipment" context="{'group_by': 'equipment_id'}"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

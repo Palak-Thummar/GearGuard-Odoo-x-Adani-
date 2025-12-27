@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="gg_stage_new" model="gg.request.stage">
+        <field name="name">New</field>
+        <field name="sequence">1</field>
+        <field name="fold">False</field>
+        <field name="is_done">False</field>
+        <field name="is_scrap">False</field>
+    </record>
+    <record id="gg_stage_in_progress" model="gg.request.stage">
+        <field name="name">In Progress</field>
+        <field name="sequence">5</field>
+        <field name="fold">False</field>
+        <field name="is_done">False</field>
+        <field name="is_scrap">False</field>
+    </record>
+    <record id="gg_stage_repaired" model="gg.request.stage">
+        <field name="name">Repaired</field>
+        <field name="sequence">10</field>
+        <field name="fold">True</field>
+        <field name="is_done">True</field>
+        <field name="is_scrap">False</field>
+    </record>
+    <record id="gg_stage_scrap" model="gg.request.stage">
+        <field name="name">Scrap</field>
+        <field name="sequence">15</field>
+        <field name="fold">True</field>
+        <field name="is_done">True</field>
+        <field name="is_scrap">True</field>
+    </record>
+</odoo>

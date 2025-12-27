@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_gg_maintenance_request" model="ir.sequence">
+        <field name="name">Maintenance Request</field>
+        <field name="code">gg.maintenance.request</field>
+        <field name="prefix">MRQ/</field>
+        <field name="padding">4</field>
+    </record>
+</odoo>
