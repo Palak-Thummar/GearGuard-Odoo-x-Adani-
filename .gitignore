@@ -1,0 +1,15 @@
+# Java/Maven
+backend/target/
+.mvn/
+.idea/
+.project
+.classpath
+
+# Node/Vite
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.env*
+
+# Logs
+*.log
