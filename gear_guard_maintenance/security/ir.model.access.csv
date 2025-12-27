@@ -1,6 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_gg_equipment_user,access.gg.equipment.user,model_gg_equipment,base.group_user,1,1,1,0
-access_gg_equipment_category_user,access.gg.equipment.category.user,model_gg_equipment_category,base.group_user,1,1,1,0
-access_gg_maintenance_team_user,access.gg.maintenance.team.user,model_gg_maintenance_team,base.group_user,1,1,1,0
-access_gg_request_stage_user,access.gg.request.stage.user,model_gg_request_stage,base.group_user,1,1,1,0
-access_gg_maintenance_request_user,access.gg.maintenance.request.user,model_gg_maintenance_request,base.group_user,1,1,1,0

@@ -1,8 +1,0 @@
-# Normalize line endings; keep text consistent in repo
-* text=auto
-
-# Enforce LF in repo for source files
-*.py  text eol=lf
-*.xml text eol=lf
-*.csv text eol=lf
-*.md  text eol=lf
