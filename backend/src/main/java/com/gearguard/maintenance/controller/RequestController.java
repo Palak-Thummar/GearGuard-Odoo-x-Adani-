@@ -45,6 +45,8 @@ public class RequestController {
         if (payload.getCategory() == null) payload.setCategory(eq.getCategory());
         if (payload.getTeam() == null) payload.setTeam(eq.getMaintenanceTeam());
         if (payload.getTechnician() == null) payload.setTechnician(eq.getDefaultTechnician());
+        // Ensure managed relation
+        payload.setEquipment(eq);
         // Default name & stage
         if (payload.getName() == null || payload.getName().isBlank()) {
             payload.setName("REQ-" + System.currentTimeMillis());
@@ -62,7 +64,12 @@ public class RequestController {
     @PutMapping("/{id}")
     public ResponseEntity<MaintenanceRequest> update(@PathVariable Long id, @RequestBody MaintenanceRequest patch) {
         return requestRepo.findById(id).map(req -> {
-            if (patch.getStage() != null) req.setStage(patch.getStage());
+            if (patch.getStage() != null) {
+                Long stageId = patch.getStage().getId();
+                if (stageId != null) {
+                    stageRepo.findById(stageId).ifPresent(req::setStage);
+                }
+            }
             if (patch.getDuration() != null) req.setDuration(patch.getDuration());
             // Scrap logic
             if (req.getStage() != null && req.getStage().isScrap() && req.getEquipment() != null) {
