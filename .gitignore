@@ -27,3 +27,14 @@ __pycache__/
 .odoorc
 odoo.log
 .odoo_session
+
+# Node/Next.js
+frontend/node_modules/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+next-env.d.ts
+.next/
+dist/
+build/
